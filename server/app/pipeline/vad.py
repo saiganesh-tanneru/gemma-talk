@@ -77,7 +77,7 @@ class VoiceActivityDetector:
         sample_rate: int = 16000,
         chunk_samples: int = 512,
         speech_threshold: float = 0.40,
-        barge_in_threshold: float = 0.60,
+        barge_in_threshold: float = 0.75,
         silence_duration_ms: int = 400,
         min_speech_duration_ms: int = 120,
         pre_roll_chunks: int = 4
@@ -127,11 +127,11 @@ class VoiceActivityDetector:
 
         barge_in_triggered = False
 
-        # Barge-in check during assistant speech
+        # Barge-in check during assistant speech (requires sustained clear user speech >= 4 chunks = 128ms)
         if is_assistant_speaking:
             if prob >= self.barge_in_threshold:
                 self.consecutive_barge_in_count += 1
-                if self.consecutive_barge_in_count >= 2:
+                if self.consecutive_barge_in_count >= 4:
                     barge_in_triggered = True
                     self.consecutive_barge_in_count = 0
             else:

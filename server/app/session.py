@@ -172,6 +172,13 @@ class VoiceSession:
                     if not clean_sentence:
                         continue
 
+                    logger.info(f"Assistant sentence: '{clean_sentence}'")
+                    await self.send_json({
+                        "type": "transcript",
+                        "role": "assistant",
+                        "text": clean_sentence
+                    })
+
                     # Synthesize and send this sentence
                     t_tts_start = time.perf_counter()
                     pcm_bytes = await self.tts.synthesize_sentence(clean_sentence)
@@ -205,29 +212,33 @@ class VoiceSession:
             for remaining_sentence in self.chunker.flush():
                 clean_sentence = OllamaStreamingClient.clean_voice_text(remaining_sentence)
                 if clean_sentence:
+                    logger.info(f"Assistant sentence: '{clean_sentence}'")
+                    await self.send_json({
+                        "type": "transcript",
+                        "role": "assistant",
+                        "text": clean_sentence
+                    })
                     pcm_bytes = await self.tts.synthesize_sentence(clean_sentence)
                     if not first_audio_sent:
                         first_audio_sent = True
                         await self.set_state(SessionState.SPEAKING)
                     await self.send_audio_bytes(pcm_bytes)
 
-            # Record assistant turn
+            # Record assistant turn in conversation history
             complete_reply = "".join(full_assistant_reply).strip()
             if complete_reply:
                 clean_reply = OllamaStreamingClient.clean_voice_text(complete_reply)
                 self.conversation_history.append({"role": "assistant", "content": clean_reply})
-                logger.info(f"Assistant: '{clean_reply}'")
-                await self.send_json({
-                    "type": "transcript",
-                    "role": "assistant",
-                    "text": clean_reply
-                })
 
             # Sent all audio chunks for this turn
             await self.send_json({"type": "turn_complete"})
 
         except asyncio.CancelledError:
             logger.info("Active generation task was cancelled during synthesis.")
+            if full_assistant_reply:
+                partial_reply = OllamaStreamingClient.clean_voice_text("".join(full_assistant_reply))
+                if partial_reply:
+                    self.conversation_history.append({"role": "assistant", "content": partial_reply})
             raise
         except Exception as e:
             logger.error(f"Error in response generation: {e}", exc_info=True)
