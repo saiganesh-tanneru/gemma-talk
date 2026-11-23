@@ -33,6 +33,8 @@ async def lifespan(app: FastAPI):
     vad_model = SileroVAD(config.SILERO_MODEL_PATH)
     
     stt_model = SpeechToText(
+        engine=config.STT_ENGINE,
+        indic_lang=config.AI4BHARAT_LANG,
         model_size=config.WHISPER_MODEL_SIZE,
         device=config.WHISPER_DEVICE,
         compute_type=config.WHISPER_COMPUTE_TYPE,
@@ -76,6 +78,8 @@ app.add_middleware(
 async def health():
     return {
         "status": "healthy",
+        "stt_engine": config.STT_ENGINE,
+        "indic_lang": config.AI4BHARAT_LANG,
         "ollama_model": config.OLLAMA_MODEL,
         "whisper_model": config.WHISPER_MODEL_SIZE,
         "tts_voice": config.TTS_VOICE,

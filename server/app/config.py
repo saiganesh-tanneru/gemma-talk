@@ -24,7 +24,12 @@ AUDIO_CHUNK_SAMPLES = int(os.getenv("AUDIO_CHUNK_SAMPLES", "512"))  # 32ms at 16
 VAD_THRESHOLD = float(os.getenv("VAD_THRESHOLD", "0.35"))
 VAD_SILENCE_DURATION_MS = int(os.getenv("VAD_SILENCE_DURATION_MS", "400"))
 
-# Speech-to-Text (faster-whisper)
+# Speech-to-Text Engine Selection
+# Options: "ai4bharat" (AI4Bharat IndicConformer ONNX) or "whisper" (faster-whisper)
+STT_ENGINE = os.getenv("STT_ENGINE", "ai4bharat")
+AI4BHARAT_LANG = os.getenv("AI4BHARAT_LANG", "hi")  # hi, te, ta, kn, mr, bn, gu, pa, ml, ur
+
+# Speech-to-Text (faster-whisper fallback)
 WHISPER_MODEL_SIZE = os.getenv("WHISPER_MODEL_SIZE", "small")
 WHISPER_DEVICE = os.getenv("WHISPER_DEVICE", "cpu")
 WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8")
