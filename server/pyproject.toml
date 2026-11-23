@@ -1,0 +1,26 @@
+[project]
+name = "gemma-talk-server"
+version = "0.1.0"
+description = "Low-latency streaming voice pipeline with Silero VAD, faster-whisper, Ollama, and Kokoro-82M"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.32.0",
+    "websockets>=13.0",
+    "httpx>=0.28.0",
+    "python-dotenv>=1.0.0",
+    "numpy>=1.26.0",
+    "onnxruntime>=1.19.0",
+    "faster-whisper>=1.1.0",
+    "kokoro-onnx>=0.3.0",
+    "soundfile>=0.13.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
+

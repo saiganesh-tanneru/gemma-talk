@@ -1,0 +1,19 @@
+# Virtual environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+dist/
+
+# Large model binaries
+server/models/
+*.onnx
+*.bin
+
+# Environment & logs
+.env
+*.log
+.DS_Store
