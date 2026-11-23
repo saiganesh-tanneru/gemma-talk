@@ -156,6 +156,11 @@ export const App: React.FC = () => {
                 >
                   <div className="message-sender">
                     {msg.role === 'user' ? 'You' : 'Gemma Assistant'}
+                    {msg.language && (
+                      <span style={{ marginLeft: '0.4rem', opacity: 0.7, textTransform: 'uppercase', fontSize: '0.65rem' }}>
+                        [{msg.language}]
+                      </span>
+                    )}
                   </div>
                   <div className="message-text">{msg.text}</div>
                 </div>

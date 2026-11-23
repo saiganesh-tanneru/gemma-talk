@@ -25,10 +25,11 @@ VAD_THRESHOLD = float(os.getenv("VAD_THRESHOLD", "0.35"))
 VAD_SILENCE_DURATION_MS = int(os.getenv("VAD_SILENCE_DURATION_MS", "400"))
 
 # Speech-to-Text (faster-whisper)
-WHISPER_MODEL_SIZE = os.getenv("WHISPER_MODEL_SIZE", "base.en")
+WHISPER_MODEL_SIZE = os.getenv("WHISPER_MODEL_SIZE", "small")
 WHISPER_DEVICE = os.getenv("WHISPER_DEVICE", "cpu")
 WHISPER_COMPUTE_TYPE = os.getenv("WHISPER_COMPUTE_TYPE", "int8")
 WHISPER_CPU_THREADS = int(os.getenv("WHISPER_CPU_THREADS", "4"))
+WHISPER_LANGUAGE = os.getenv("WHISPER_LANGUAGE", "") or None  # None = auto-detect Indic & world languages
 
 # Text-to-Speech (Kokoro-82M ONNX)
 TTS_VOICE = os.getenv("TTS_VOICE", "af_heart")
@@ -45,6 +46,8 @@ KOKORO_VOICES_PATH = MODELS_DIR / "voices-v1.0.bin"
 VOICE_SYSTEM_PROMPT = (
     "You are a helpful, natural, and expressive voice assistant. "
     "You are conversing directly over audio in real-time. "
+    "Listen carefully to the user's language and respond naturally in the same language or dialect "
+    "(such as English, Hindi, Telugu, Tamil, Kannada, Bengali, or code-mixed conversational speech like Hinglish). "
     "Respond in 1 to 2 clear, spoken, conversational sentences. "
     "NEVER use markdown, formatting, asterisks, bullet points, numbered lists, emojis, or code blocks. "
     "NEVER include internal thought blocks or <think> tags. "

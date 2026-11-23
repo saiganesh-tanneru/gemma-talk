@@ -118,7 +118,7 @@ class VoiceSession:
         # 1. TRANSCRIBING
         await self.set_state(SessionState.TRANSCRIBING)
         t_stt_start = time.perf_counter()
-        transcript = await self.stt.transcribe(audio_data)
+        transcript, detected_lang, _ = await self.stt.transcribe(audio_data, language=config.WHISPER_LANGUAGE)
         self.stt_latency_ms = (time.perf_counter() - t_stt_start) * 1000.0
 
         if not transcript or len(transcript.strip()) == 0:
@@ -126,11 +126,12 @@ class VoiceSession:
             await self.set_state(SessionState.LISTENING)
             return
 
-        logger.info(f"User: '{transcript}' [STT: {self.stt_latency_ms:.1f}ms]")
+        logger.info(f"User ({detected_lang}): '{transcript}' [STT: {self.stt_latency_ms:.1f}ms]")
         await self.send_json({
             "type": "transcript",
             "role": "user",
-            "text": transcript
+            "text": transcript,
+            "language": detected_lang
         })
 
         # Append user turn to conversation history (keep last 6 turns for context)

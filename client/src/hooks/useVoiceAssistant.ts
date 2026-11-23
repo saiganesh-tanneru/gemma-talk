@@ -21,6 +21,7 @@ export interface ChatMessage {
   id: string;
   role: 'user' | 'assistant';
   text: string;
+  language?: string;
   timestamp: Date;
 }
 
@@ -111,6 +112,7 @@ export function useVoiceAssistant() {
                 id: Math.random().toString(36).substring(7),
                 role: msg.role,
                 text: msg.text,
+                language: msg.language,
                 timestamp: new Date(),
               },
             ]);
