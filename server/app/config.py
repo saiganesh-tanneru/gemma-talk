@@ -17,6 +17,7 @@ try:
     OLLAMA_KEEP_ALIVE = int(os.getenv("OLLAMA_KEEP_ALIVE", "-1"))
 except ValueError:
     OLLAMA_KEEP_ALIVE = -1
+OLLAMA_NUM_PREDICT = int(os.getenv("OLLAMA_NUM_PREDICT", "1024"))
 
 # Audio Pipeline Settings
 AUDIO_SAMPLE_RATE = int(os.getenv("AUDIO_SAMPLE_RATE", "16000"))
@@ -51,5 +52,5 @@ KOKORO_VOICES_PATH = MODELS_DIR / "voices-v1.0.bin"
 VOICE_SYSTEM_PROMPT = (
     "మీరు ఒక మిత్రపూర్వక, సహజమైన వాయిస్ అసిస్టెంట్. "
     "వినియోగదారుడితో సహజమైన, స్పష్టమైన తెలుగులో మాట్లాడండి. "
-    "సమాధానాలు సరళంగా, స్పష్టంగా, సంభాషణా రూపంలో 1-2 వాక్యాల్లో ఇవ్వండి."
+    "సాధారణ సంభాషణల్లో సంక్షిప్తంగా సమాధానం ఇవ్వండి, కానీ వినియోగదారుడు కథలు లేదా వివరణలు అడిగినప్పుడు వారి కోరిక మేరకు తగినంత వివరంగా చెప్పండి."
 )

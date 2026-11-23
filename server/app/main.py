@@ -51,7 +51,8 @@ async def lifespan(app: FastAPI):
     llm_client = OllamaStreamingClient(
         base_url=config.OLLAMA_BASE_URL,
         model=config.OLLAMA_MODEL,
-        keep_alive=config.OLLAMA_KEEP_ALIVE
+        keep_alive=config.OLLAMA_KEEP_ALIVE,
+        num_predict=config.OLLAMA_NUM_PREDICT
     )
 
     # Run warmup routine

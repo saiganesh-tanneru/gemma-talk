@@ -9,14 +9,21 @@ logger = logging.getLogger(__name__)
 class OllamaStreamingClient:
     """Async streaming client for Ollama LLM with cooperative cancellation."""
 
-    def __init__(self, base_url: str = "http://localhost:11434", model: str = "gemma3:4b", keep_alive: int = -1):
+    def __init__(
+        self,
+        base_url: str = "http://localhost:11434",
+        model: str = "gemma3:4b",
+        keep_alive: int = -1,
+        num_predict: int = 1024
+    ):
         self.base_url = base_url.rstrip("/")
         self.model = model
         try:
             self.keep_alive = int(keep_alive)
         except (ValueError, TypeError):
             self.keep_alive = -1
-        self.client = httpx.AsyncClient(timeout=httpx.Timeout(30.0, connect=5.0))
+        self.num_predict = num_predict
+        self.client = httpx.AsyncClient(timeout=httpx.Timeout(60.0, connect=5.0))
 
     async def close(self):
         await self.client.aclose()
@@ -54,7 +61,7 @@ class OllamaStreamingClient:
             "options": {
                 "temperature": 0.7,
                 "top_p": 0.9,
-                "num_predict": 120,  # Short conversational replies (1-2 sentences)
+                "num_predict": self.num_predict,
             },
             "keep_alive": self.keep_alive
         }
