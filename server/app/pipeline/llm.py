@@ -12,7 +12,7 @@ class OllamaStreamingClient:
     def __init__(
         self,
         base_url: str = "http://localhost:11434",
-        model: str = "gemma3:4b",
+        model: str = "gemma4",
         keep_alive: int = -1,
         num_predict: int = 1024
     ):

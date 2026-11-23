@@ -30,7 +30,7 @@ else
 fi
 
 OLLAMA_BASE_URL="${OLLAMA_BASE_URL:-http://localhost:11434}"
-OLLAMA_MODEL="${OLLAMA_MODEL:-gemma3:4b}"
+OLLAMA_MODEL="${OLLAMA_MODEL:-gemma4}"
 
 # 2. Check Prerequisite Tools
 echo -e "\n${BOLD}[1/5] Checking Tooling Prerequisites...${NC}"

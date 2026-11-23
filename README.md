@@ -33,7 +33,7 @@ A **100% local, zero-API-key, hands-free conversational voice assistant** (Gemin
  │  2. faster-whisper (base.en / small, int8 CPU, greedy beam_size=1):                       │
  │     • Direct in-memory Float32 NumPy PCM array transcription                              │
  │                                                                                           │
- │  3. Ollama (gemma3:4b on Metal GPU, keep_alive=-1):                                       │
+ │  3. Ollama (gemma4 on Metal GPU, keep_alive=-1):                                          │
  │     • Cooperative async token streaming with instant cancellation                         │
  │     • Voice-optimized system prompt (short conversational sentences, no markdown)         │
  │                                                                                           │
@@ -102,7 +102,7 @@ To enable transcription for Indian languages (Hindi, Telugu, Tamil, Kannada, Mar
 | `SERVER_HOST` | `0.0.0.0` | Backend bind host |
 | `SERVER_PORT` | `8000` | Backend port |
 | `OLLAMA_BASE_URL` | `http://localhost:11434` | Ollama API endpoint |
-| `OLLAMA_MODEL` | `gemma3:4b` | Target LLM model |
+| `OLLAMA_MODEL` | `gemma4` | Target LLM model |
 | `OLLAMA_KEEP_ALIVE` | `-1` | Keeps model resident in GPU VRAM indefinitely |
 | `AUDIO_SAMPLE_RATE` | `16000` | STT and VAD sample rate |
 | `AUDIO_CHUNK_SAMPLES` | `512` | 32ms audio frame chunk size |

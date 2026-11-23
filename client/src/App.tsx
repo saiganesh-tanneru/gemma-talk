@@ -47,7 +47,7 @@ export const App: React.FC = () => {
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> AI4Bharat Telugu (te)
           </span>
           <span className="chip">
-            <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Ollama gemma3:4b
+            <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Ollama gemma4
           </span>
         </div>
       </header>
