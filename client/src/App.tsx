@@ -44,7 +44,7 @@ export const App: React.FC = () => {
             <Cpu className="w-3.5 h-3.5 text-indigo-400" /> Apple M2 Local
           </span>
           <span className="chip">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> AI4Bharat IndicConformer
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" /> AI4Bharat Telugu (te)
           </span>
           <span className="chip">
             <Sparkles className="w-3.5 h-3.5 text-purple-400" /> Ollama gemma3:4b
