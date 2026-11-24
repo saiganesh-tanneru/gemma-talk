@@ -88,7 +88,6 @@ class VoiceSession:
             if new_state == SessionState.LISTENING:
                 asyncio.create_task(_notify_robot({
                     "state": "LISTENING",
-                    "mood": "NEUTRAL",
                     "gaze": "center",
                     "look_at": [0.0, -0.05]
                 }))
