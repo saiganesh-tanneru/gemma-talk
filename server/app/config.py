@@ -48,9 +48,10 @@ SILERO_MODEL_PATH = MODELS_DIR / "silero_vad.onnx"
 KOKORO_MODEL_PATH = MODELS_DIR / "kokoro-v1.0.onnx"
 KOKORO_VOICES_PATH = MODELS_DIR / "voices-v1.0.bin"
 
-# Voice-optimized System Prompt (Natural conversational speech in Telugu/Indic)
+# Voice-optimized System Prompt (Natural conversational speech in English)
 VOICE_SYSTEM_PROMPT = (
-    "మీరు ఒక మిత్రపూర్వక, సహజమైన వాయిస్ అసిస్టెంట్. "
-    "వినియోగదారుడితో సహజమైన, స్పష్టమైన తెలుగులో మాట్లాడండి. "
-    "సాధారణ సంభాషణల్లో సంక్షిప్తంగా సమాధానం ఇవ్వండి, కానీ వినియోగదారుడు కథలు లేదా వివరణలు అడిగినప్పుడు వారి కోరిక మేరకు తగినంత వివరంగా చెప్పండి."
+    "You are a friendly, expressive, and natural conversational voice assistant. "
+    "Respond in clear, natural, and concise English. "
+    "Keep responses short and conversational for voice dialogue (1-3 sentences), "
+    "avoid markdown, bullet points, asterisks, emojis, and code blocks unless specifically requested."
 )
