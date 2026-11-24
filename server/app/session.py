@@ -1,6 +1,7 @@
 import time
 import asyncio
 import logging
+import httpx
 from enum import Enum
 from typing import Optional, List, Dict
 from fastapi import WebSocket, WebSocketDisconnect
@@ -13,6 +14,16 @@ from server.app.pipeline.tts import TextToSpeech
 from server.app import config
 
 logger = logging.getLogger(__name__)
+
+ROBOT_COMMAND_URL = "http://127.0.0.1:8765/command"
+
+async def _notify_robot(payload: dict):
+    """Dispatches real-time session states and lip-sync speech to Gemma-Bot in Webots."""
+    try:
+        async with httpx.AsyncClient(timeout=0.3) as client:
+            await client.post(ROBOT_COMMAND_URL, json=payload)
+    except Exception:
+        pass
 
 class SessionState(str, Enum):
     IDLE = "IDLE"
@@ -64,7 +75,7 @@ class VoiceSession:
         self.total_e2e_ms: float = 0.0
 
     async def set_state(self, new_state: SessionState):
-        """Update and broadcast session state to frontend client."""
+        """Update and broadcast session state to frontend client and Gemma-Bot."""
         if self.state != new_state:
             self.state = new_state
             logger.debug(f"Session State -> {new_state.value}")
@@ -72,6 +83,33 @@ class VoiceSession:
                 "type": "state_change",
                 "state": new_state.value
             })
+
+            # Mirror conversational states on Gemma-Bot in Webots
+            if new_state == SessionState.LISTENING:
+                asyncio.create_task(_notify_robot({
+                    "state": "LISTENING",
+                    "mood": "NEUTRAL",
+                    "gaze": "center",
+                    "look_at": [0.0, -0.05]
+                }))
+            elif new_state in (SessionState.TRANSCRIBING, SessionState.THINKING):
+                asyncio.create_task(_notify_robot({
+                    "state": "THINKING",
+                    "mood": "THINKING",
+                    "gesture": "curious"
+                }))
+            elif new_state == SessionState.SPEAKING:
+                asyncio.create_task(_notify_robot({
+                    "state": "SPEAKING",
+                    "mood": "HAPPY",
+                    "gesture": "nod"
+                }))
+            elif new_state == SessionState.INTERRUPTED:
+                asyncio.create_task(_notify_robot({
+                    "state": "INTERRUPTED",
+                    "interrupt": True,
+                    "mood": "SURPRISED"
+                }))
 
     async def send_json(self, payload: dict):
         """Safely send JSON message to client."""
@@ -178,6 +216,12 @@ class VoiceSession:
                         "role": "assistant",
                         "text": clean_sentence
                     })
+                    # Animate lip-sync and nodding on Gemma-Bot (audio played by client)
+                    asyncio.create_task(_notify_robot({
+                        "speech": clean_sentence,
+                        "mood": "HAPPY",
+                        "audio": False
+                    }))
 
                     # Synthesize and send this sentence
                     t_tts_start = time.perf_counter()
@@ -218,6 +262,12 @@ class VoiceSession:
                         "role": "assistant",
                         "text": clean_sentence
                     })
+                    # Animate lip-sync and nodding on Gemma-Bot (audio played by client)
+                    asyncio.create_task(_notify_robot({
+                        "speech": clean_sentence,
+                        "mood": "HAPPY",
+                        "audio": False
+                    }))
                     pcm_bytes = await self.tts.synthesize_sentence(clean_sentence)
                     if not first_audio_sent:
                         first_audio_sent = True
